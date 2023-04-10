@@ -89,10 +89,12 @@ class JsonPath
   end
 
   def conversion(hash)
-    json_data = JSON.parse(hash.to_json)
-    array_val = JsonPath.new('$.coordinates.[x,y]').on(json_data)
-    answer = array_val.each_slice(2).map { |a| a.join(",") }.join(" ")
-    return answer
+    coordinates = hash[:coordinates]
+    transformed_str = ""
+    coordinates.each do |key, value|
+      transformed_str += "#{value[:x]},#{value[:y]} "
+    end
+    return transformed_str.strip
   end
 
   def self.fetch_all_path(obj)
